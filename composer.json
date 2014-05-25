@@ -1,0 +1,28 @@
+{
+    "name":        "dontdrinkandroot/symfony-extension-bundle",
+    "type":        "symfony-bundle",
+    "homepage":    "https://github.com/dontdrinkandroot/symfony-extension-bundle.php",
+    "license":     "Apache-2.0",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+
+    "authors": [
+        {
+            "name": "Philip Washington Sorst",
+            "homepage": "http://sorst.net"
+        }
+    ],
+
+    "require": {
+        "php":                      ">=5.3.2",
+        "symfony/framework-bundle": "~2.4"
+    },
+
+    "minimum-stability": "dev",
+
+    "autoload": {
+        "psr-0": {
+            "Net\\Dontdrinkandroot\\Symfony\\ExtensionBundle": ""
+        }
+    }
+}
