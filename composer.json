@@ -19,8 +19,8 @@
         "phpunit/phpunit": "~4.1"
     },
     "autoload": {
-        "psr-0": {
-            "Net\\Dontdrinkandroot\\Symfony\\ExtensionBundle": ""
+        "psr-4": {
+            "Net\\Dontdrinkandroot\\Symfony\\ExtensionBundle\\": ""
         }
     }
 }
