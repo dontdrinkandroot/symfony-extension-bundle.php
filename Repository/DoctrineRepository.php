@@ -163,4 +163,19 @@ class DoctrineRepository
         return $this->connection->update($this->tableName, $values, $where);
     }
 
+    public function beginTransaction()
+    {
+        $this->connection->beginTransaction();
+    }
+
+    public function commitTransaction()
+    {
+        $this->connection->commit();
+    }
+
+    public function rollbackTransaction()
+    {
+        $this->connection->rollBack();
+    }
+
 } 
