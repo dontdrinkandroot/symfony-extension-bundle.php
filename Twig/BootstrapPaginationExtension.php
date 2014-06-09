@@ -85,7 +85,7 @@ class BootstrapPaginationExtension extends \Twig_Extension
 
         /* Render next page */
         $cssClasses = array();
-        if ($pagination->getCurrentPage() == $pagination->getTotalPages()) {
+        if ($pagination->getCurrentPage() >= $pagination->getTotalPages()) {
             $cssClasses[] = 'disabled';
         }
         $html .= $this->renderLink($pagination->getCurrentPage() + 1, '&raquo;', $route, $params, $cssClasses);
