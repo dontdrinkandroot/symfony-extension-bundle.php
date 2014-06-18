@@ -5,8 +5,11 @@ namespace Net\Dontdrinkandroot\Symfony\ExtensionBundle\Repository;
 
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Exception\NoResultFoundException;
 use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Exception\TooManyResultsException;
 use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Model\PaginatedResult;
+use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Model\Pagination;
 
 class DoctrineRepository
 {
@@ -36,21 +39,17 @@ class DoctrineRepository
     public function findById($id)
     {
         $sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `' . $this->primaryKey . '` = :id';
-        $results = $this->connection->fetchAll($sql, array(":id" => $id));
+        $rows = $this->connection->fetchAll($sql, array(":id" => $id));
 
-        if (0 == count($results)) {
-            return null;
-        }
+        return $this->getSingleRowOrNull($rows);
+    }
 
-        /* This exception is only thrown if the primary key was not specified correctly */
-        if (1 < count($results)) {
-            throw new TooManyResultsException(
-                'Found ' . count($results) .
-                ' results but only max one was expected'
-            );
-        }
+    public function getById($id)
+    {
+        $sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `' . $this->primaryKey . '` = :id';
+        $rows = $this->connection->fetchAll($sql, array(":id" => $id));
 
-        return $results[0];
+        return $this->getSingleRow($rows);
     }
 
     /**
@@ -82,7 +81,6 @@ class DoctrineRepository
      */
     public function find(array $columns = array(), array $properties = array(), $firstResult = null, $maxResults = null)
     {
-
         /* @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder->from($this->tableName, 't');
@@ -120,7 +118,6 @@ class DoctrineRepository
 
     public function findCount(array $properties = array())
     {
-
         /* @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder->select('count(*) AS c');
@@ -176,6 +173,41 @@ class DoctrineRepository
     public function rollbackTransaction()
     {
         $this->connection->rollBack();
+    }
+
+    public function getSingleRowOrNull(array $rows)
+    {
+        if (empty($rows)) {
+            return null;
+        }
+        $this->assertSingleRow($rows);
+
+        return $rows[0];
+    }
+
+    public function getSingleRow(array $rows)
+    {
+        $this->assertRowsNotEmpty($rows);
+        $this->assertSingleRow($rows);
+
+        return $rows[0];
+    }
+
+    private function assertRowsNotEmpty(array $rows)
+    {
+        if (empty($rows)) {
+            throw new NoResultFoundException();
+        }
+    }
+
+    private function assertSingleRow(array $rows)
+    {
+        if (1 < count($rows)) {
+            throw new TooManyResultsException(
+                'Found ' . count($rows) .
+                ' results but only max one was expected'
+            );
+        }
     }
 
 } 
