@@ -92,12 +92,10 @@ class DoctrineRepository
         }
 
         if (!empty($properties)) {
-            $and = $queryBuilder->expr()->andX();
             foreach ($properties as $column => $value) {
-                $and->add($queryBuilder->expr()->eq('t.' . $column, ':' . $column));
-                $queryBuilder->setParameter(':' . $column, $value);
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('t.' . $column, ':' . $column));
+                $queryBuilder->setParameter($column, $value);
             }
-            $queryBuilder->where($and);
         }
 
         if (null !== $firstResult) {
@@ -110,8 +108,6 @@ class DoctrineRepository
 
         /* @var \Doctrine\DBAL\Statement $stmt */
         $stmt = $queryBuilder->execute();
-
-        $this->findCount($properties);
 
         return $stmt->fetchAll();
     }
@@ -210,4 +206,4 @@ class DoctrineRepository
         }
     }
 
-} 
+}
