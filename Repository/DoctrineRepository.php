@@ -36,6 +36,20 @@ class DoctrineRepository
         $this->primaryKey = (string)$primaryKey;
     }
 
+    /**
+     * Get the underlying Doctrine Database Connection.
+     * @return Connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @param mixed $id
+     * @return array|null
+     * @throws TooManyResultsException
+     */
     public function findById($id)
     {
         $sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `' . $this->primaryKey . '` = :id';
@@ -44,6 +58,12 @@ class DoctrineRepository
         return $this->getSingleRowOrNull($rows);
     }
 
+    /**
+     * @param mixed $id
+     * @return array
+     * @throws NoResultFoundException
+     * @throws TooManyResultsException
+     */
     public function getById($id)
     {
         $sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `' . $this->primaryKey . '` = :id';
@@ -112,6 +132,10 @@ class DoctrineRepository
         return $stmt->fetchAll();
     }
 
+    /**
+     * @param array $properties
+     * @return int
+     */
     public function findCount(array $properties = array())
     {
         /* @var QueryBuilder $queryBuilder */
@@ -130,27 +154,43 @@ class DoctrineRepository
 
         /* @var \Doctrine\DBAL\Statement $stmt */
         $stmt = $queryBuilder->execute();
-        $results = $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
 
-        return $results[0]['c'];
+        return (int) $this->getSingleRow($rows)['c'];
     }
 
+    /**
+     * @param mixed $id
+     * @return int
+     */
     public function delete($id)
     {
         return $this->connection->delete($this->tableName, array($this->primaryKey => $id));
     }
 
+    /**
+     * @return array
+     */
     public function findAll()
     {
         $sql = 'SELECT * FROM `' . $this->tableName . '`';
         return $this->connection->fetchAll($sql);
     }
 
+    /**
+     * @param array $row
+     * @return int
+     */
     public function insert(array $row)
     {
         return $this->connection->insert($this->tableName, $row);
     }
 
+    /**
+     * @param array $values
+     * @param array $where
+     * @return int
+     */
     public function update(array $values, array $where)
     {
         return $this->connection->update($this->tableName, $values, $where);
@@ -171,6 +211,11 @@ class DoctrineRepository
         $this->connection->rollBack();
     }
 
+    /**
+     * @param array $rows
+     * @return array|null
+     * @throws TooManyResultsException
+     */
     public function getSingleRowOrNull(array $rows)
     {
         if (empty($rows)) {
@@ -181,6 +226,12 @@ class DoctrineRepository
         return $rows[0];
     }
 
+    /**
+     * @param array $rows
+     * @return array
+     * @throws TooManyResultsException
+     * @throws NoResultFoundException
+     */
     public function getSingleRow(array $rows)
     {
         $this->assertRowsNotEmpty($rows);
@@ -189,6 +240,10 @@ class DoctrineRepository
         return $rows[0];
     }
 
+    /**
+     * @param array $rows
+     * @throws NoResultFoundException
+     */
     private function assertRowsNotEmpty(array $rows)
     {
         if (empty($rows)) {
@@ -196,6 +251,10 @@ class DoctrineRepository
         }
     }
 
+    /**
+     * @param array $rows
+     * @throws TooManyResultsException
+     */
     private function assertSingleRow(array $rows)
     {
         if (1 < count($rows)) {
