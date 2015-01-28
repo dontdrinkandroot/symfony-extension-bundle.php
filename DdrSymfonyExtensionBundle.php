@@ -1,6 +1,6 @@
 <?php
 
-namespace Net\Dontdrinkandroot\Symfony\ExtensionBundle;
+namespace Dontdrinkandroot\Symfony\ExtensionBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

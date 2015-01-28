@@ -2,7 +2,7 @@ parameters:
 
 services:
     ddr.twig.bootstrap.pagination_extension:
-        class: Net\Dontdrinkandroot\Symfony\ExtensionBundle\Twig\BootstrapPaginationExtension
+        class: Dontdrinkandroot\Symfony\ExtensionBundle\Twig\BootstrapPaginationExtension
         arguments: ["@router"]
         tags:
             - { name: twig.extension }

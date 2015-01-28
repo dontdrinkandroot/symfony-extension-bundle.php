@@ -1,10 +1,9 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Symfony\ExtensionBundle\Twig;
+namespace Dontdrinkandroot\Symfony\ExtensionBundle\Twig;
 
-
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Model\Pagination;
+use Dontdrinkandroot\Pagination\Pagination;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class BootstrapPaginationExtension extends \Twig_Extension
@@ -37,6 +36,8 @@ class BootstrapPaginationExtension extends \Twig_Extension
 
     /**
      * @param Pagination $pagination
+     *
+     * @return string
      */
     public function generatePagination($pagination, $route, $params)
     {

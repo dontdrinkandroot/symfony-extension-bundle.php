@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Symfony\ExtensionBundle\Exception;
+namespace Dontdrinkandroot\Symfony\ExtensionBundle\Exception;
 
 
 /**

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Symfony\ExtensionBundle\Repository;
+namespace Dontdrinkandroot\Symfony\ExtensionBundle\Repository;
 
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Exception\NoResultFoundException;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Exception\TooManyResultsException;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Model\PaginatedResult;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Model\Pagination;
+use Dontdrinkandroot\Pagination\PaginatedResult;
+use Dontdrinkandroot\Pagination\Pagination;
+use Dontdrinkandroot\Symfony\ExtensionBundle\Exception\NoResultFoundException;
+use Dontdrinkandroot\Symfony\ExtensionBundle\Exception\TooManyResultsException;
 
 class DoctrineRepository
 {
